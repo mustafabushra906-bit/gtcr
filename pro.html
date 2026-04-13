@@ -584,17 +584,53 @@ print(resp.json())
   <!-- SIGNUP FORM -->
   <div class="signup-section" id="signup">
     <div class="signup-box">
-      <div id="form-view">
+
+      <!-- ─── STEP 1: plan selection ─── -->
+      <div id="step-plan">
         <h2>Get Pro Access</h2>
         <p>14-day free trial · No credit card required · Cancel anytime</p>
 
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0;">
+          <div class="plan-pick active" data-plan="trial" onclick="pickPlan(this)">
+            <div style="font-family:var(--sans);font-weight:800;font-size:22px;">$29<span style="font-size:12px;font-weight:400;color:var(--muted);">/mo</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Pro Monthly</div>
+          </div>
+          <div class="plan-pick" data-plan="research" onclick="pickPlan(this)">
+            <div style="font-family:var(--sans);font-weight:800;font-size:22px;">$199<span style="font-size:12px;font-weight:400;color:var(--muted);">/yr</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Research Annual</div>
+            <div style="font-size:10px;color:var(--green);margin-top:3px;font-family:var(--mono);">SAVE 43%</div>
+          </div>
+        </div>
+
+        <button class="submit-btn" onclick="goStep2()">
+          Continue →
+        </button>
+        <div class="form-note">
+          Free tier always available on
+          <a href="https://github.com/mustafabushra906-bit/gtcr">GitHub</a>.
+        </div>
+      </div>
+
+      <!-- ─── STEP 2: details form ─── -->
+      <div id="step-form" style="display:none;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <button onclick="goStep1()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:12px;">← back</button>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--muted);">
+            Plan: <span id="plan-label" style="color:var(--accent);">Pro $29/mo</span>
+          </div>
+        </div>
+
         <div class="form-group">
           <label>NAME</label>
-          <input type="text" id="f-name" placeholder="Your name">
+          <input type="text" id="f-name" placeholder="Your name" required>
         </div>
         <div class="form-group">
           <label>EMAIL</label>
-          <input type="email" id="f-email" placeholder="you@university.edu">
+          <input type="email" id="f-email" placeholder="you@university.edu" required>
+        </div>
+        <div class="form-group">
+          <label>AFFILIATION (optional)</label>
+          <input type="text" id="f-org" placeholder="MIT, CERN, independent…">
         </div>
         <div class="form-group">
           <label>USE CASE</label>
@@ -609,41 +645,51 @@ print(resp.json())
             <option>Other</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>PLAN</label>
-          <select id="f-plan">
-            <option value="trial">14-day Free Trial → then $29/mo</option>
-            <option value="research">Research Annual — $199/yr (best value)</option>
-            <option value="free">Stay on Free (core library only)</option>
-          </select>
+
+        <!-- validation error -->
+        <div id="form-error" style="display:none;
+             background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);
+             color:#f87171;border-radius:8px;padding:10px 14px;
+             font-family:var(--mono);font-size:12px;margin-bottom:12px;">
         </div>
 
-        <button class="submit-btn" onclick="handleSubmit()">
+        <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
           Start Free Trial →
         </button>
-
         <div class="form-note">
           By signing up you agree to our
-          <a href="#">Terms of Service</a>.
-          Your data is never sold.
+          <a href="#">Terms</a>.
+          No spam, ever.
         </div>
       </div>
 
+      <!-- ─── SUCCESS ─── -->
       <div class="success-box" id="success-view">
         <div class="success-icon">⚛️</div>
         <h3>You're in!</h3>
-        <p>Check your email for your Pro license key.<br>
-           It may take up to 2 minutes to arrive.</p>
-        <div class="success-key" id="demo-key">pro-demo-key-2026</div>
-        <p style="font-size:12px;color:var(--muted);font-family:var(--mono);">
-          Use this key in the X-License-Key header
+        <p>A confirmation email is on its way.<br>
+           We'll send your Pro license key within 24 hours.</p>
+        <div class="success-key" id="demo-key">Checking your inbox…</div>
+        <p style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-top:8px;">
+          While you wait — explore the free calculator:
         </p>
-        <a href="https://github.com/mustafabushra906-bit/gtcr"
-           style="display:inline-block;margin-top:20px;color:var(--glow);
-                  font-family:var(--mono);font-size:13px;text-decoration:none;">
-          → View GitHub Docs
+        <a href="https://mustafabushra906-bit.github.io/gtcr/"
+           style="display:inline-block;margin-top:16px;
+                  padding:10px 22px;border-radius:8px;
+                  background:linear-gradient(135deg,var(--glow),var(--violet));
+                  color:#fff;font-family:var(--mono);font-size:13px;
+                  text-decoration:none;font-weight:700;">
+          → Open Calculator
         </a>
+        <div style="margin-top:14px;">
+          <a href="https://github.com/mustafabushra906-bit/gtcr"
+             style="color:var(--muted);font-family:var(--mono);font-size:11px;
+                    text-decoration:none;">
+            → GitHub Docs
+          </a>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -658,67 +704,153 @@ print(resp.json())
       <div class="footer-links">
         <a href="https://github.com/mustafabushra906-bit/gtcr">GitHub</a>
         <a href="https://mustafabushra906-bit.github.io/gtcr/">Calculator</a>
-        <a href="mailto:pro@gtcr.dev">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#1c6c6e735c7b687f6e3278796a">Contact</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-function handleSubmit() {
-  const name  = document.getElementById('f-name').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const use   = document.getElementById('f-use').value;
-  const plan  = document.getElementById('f-plan').value;
+// ── CONFIG — paste your Formspree endpoint here ───────────────────────
+// 1. Go to https://formspree.io  →  New Form
+// 2. Copy the endpoint, e.g.  https://formspree.io/f/xdayoogk
+// 3. Replace the string below
+// السطر 3 في الـ script:
+const FORMSPREE_URL = https://formspree.io/f/xdayoogk'';
 
-  if (!name || !email) {
-    alert('Please fill in your name and email.');
-    return;
-  }
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    alert('Please enter a valid email address.');
-    return;
-  }
+// ── Plan selection ────────────────────────────────────────────────────
+let selectedPlan = 'trial';
 
-  // Simulate signup (replace with real backend: Supabase / Stripe / emailjs)
-  const btn = document.querySelector('.submit-btn');
-  btn.textContent = 'Processing…';
-  btn.disabled = true;
+document.querySelectorAll('.plan-pick').forEach(el => {
+  el.style.cssText = `
+    padding:16px;border-radius:12px;cursor:pointer;
+    background:rgba(255,255,255,.04);border:1px solid var(--border);
+    text-align:center;transition:.15s;
+  `;
+});
 
-  setTimeout(() => {
-    // Generate demo key (in production: call your backend)
-    const key = 'pro-' + Math.random().toString(36).slice(2,10) + '-' +
-                Date.now().toString(36);
-    document.getElementById('demo-key').textContent = key;
-    document.getElementById('form-view').style.display = 'none';
-    document.getElementById('success-view').style.display = 'block';
-
-    // In production: POST to your backend
-    console.log('Signup:', { name, email, use, plan, key });
-  }, 1200);
+function pickPlan(el) {
+  document.querySelectorAll('.plan-pick').forEach(p => {
+    p.style.borderColor = 'var(--border)';
+    p.style.background  = 'rgba(255,255,255,.04)';
+    p.style.boxShadow   = 'none';
+  });
+  el.style.borderColor = 'rgba(59,111,255,.6)';
+  el.style.background  = 'rgba(59,111,255,.12)';
+  el.style.boxShadow   = '0 0 16px rgba(59,111,255,.2)';
+  selectedPlan = el.dataset.plan;
 }
 
-// Smooth scroll for anchors
+// Apply active style on load
+document.querySelector('.plan-pick.active').click();
+
+function goStep2() {
+  const labels = { trial:'Pro Monthly — $29/mo', research:'Research Annual — $199/yr' };
+  document.getElementById('plan-label').textContent = labels[selectedPlan];
+  const btnLabels = { trial:'Start Free Trial →', research:'Get Research Plan →' };
+  document.getElementById('submit-btn').textContent = btnLabels[selectedPlan];
+  document.getElementById('step-plan').style.display = 'none';
+  document.getElementById('step-form').style.display = 'block';
+}
+
+function goStep1() {
+  document.getElementById('step-form').style.display = 'none';
+  document.getElementById('step-plan').style.display = 'block';
+}
+
+// ── Form submission → Formspree ───────────────────────────────────────
+async function handleSubmit() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const org   = document.getElementById('f-org').value.trim();
+  const use   = document.getElementById('f-use').value;
+  const errEl = document.getElementById('form-error');
+  const btn   = document.getElementById('submit-btn');
+
+  // Client-side validation
+  errEl.style.display = 'none';
+  if (!name) { showErr('Please enter your name.'); return; }
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    showErr('Please enter a valid email address.'); return;
+  }
+
+  // Loading state
+  btn.textContent = 'Sending…';
+  btn.disabled    = true;
+  btn.style.opacity = '.7';
+
+  // ── Send to Formspree ──
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method:  'POST',
+      headers: { 'Accept': 'application/json',
+                 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, email, org, use,
+        plan: selectedPlan,
+        _subject: `GTC-R Pro Signup — ${selectedPlan} — ${name}`,
+        _replyto: email,
+      }),
+    });
+
+    if (res.ok) {
+      // ── Success ──
+      document.getElementById('step-form').style.display  = 'none';
+      document.getElementById('success-view').style.display = 'block';
+      document.getElementById('demo-key').textContent =
+        `✓ Confirmation sent to ${email}`;
+    } else {
+      const data = await res.json().catch(() => ({}));
+      const msg  = data.errors?.[0]?.message || 'Submission failed. Please try again.';
+
+      // Fallback: if Formspree ID not configured yet, show success anyway
+      if (FORMSPREE_URL.includes('YOUR_FORM_ID')) {
+        showFallbackSuccess(email);
+      } else {
+        showErr(msg);
+        btn.textContent = 'Start Free Trial →';
+        btn.disabled    = false;
+        btn.style.opacity = '1';
+      }
+    }
+  } catch (e) {
+    // Network error or Formspree not configured
+    if (FORMSPREE_URL.includes('YOUR_FORM_ID')) {
+      showFallbackSuccess(email);
+    } else {
+      showErr('Network error. Please check your connection and try again.');
+      btn.textContent = 'Start Free Trial →';
+      btn.disabled    = false;
+      btn.style.opacity = '1';
+    }
+  }
+}
+
+function showFallbackSuccess(email) {
+  // Used when Formspree not yet configured — shows success + instructions
+  document.getElementById('step-form').style.display  = 'none';
+  document.getElementById('success-view').style.display = 'block';
+  document.getElementById('demo-key').textContent =
+    '⚠ Configure Formspree URL to activate email delivery';
+  // Log to console so developer can see submissions during testing
+  console.log('GTC-R signup (Formspree not configured):',
+    { email, plan: selectedPlan });
+}
+
+function showErr(msg) {
+  const el = document.getElementById('form-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── Smooth scroll ─────────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
   });
 });
-
-// Update submit button text based on plan selection
-document.getElementById('f-plan').addEventListener('change', function() {
-  const labels = {
-    trial:    'Start Free Trial →',
-    research: 'Get Research Plan →',
-    free:     'Download Free →',
-  };
-  document.querySelector('.submit-btn').textContent =
-    labels[this.value] || 'Get Started →';
-});
 </script>
+
 </body>
 </html>
